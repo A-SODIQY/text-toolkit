@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Direct Link & QR Code Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 15px; background: #f4f6f8; }
+        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #075e54; margin-bottom: 5px; }
+        label { font-weight: bold; display: block; margin-top: 15px; margin-bottom: 5px; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { background: #25d366; color: white; border: none; padding: 12px 20px; font-weight: bold; border-radius: 6px; width: 100%; margin-top: 15px; cursor: pointer; font-size: 16px; }
+        .result { margin-top: 25px; background: #e7fceb; padding: 15px; border-radius: 8px; text-align: center; word-break: break-all; }
+        .qr-img { margin-top: 15px; max-width: 200px; }
+        .nav { margin-bottom: 15px; }
+        .nav a { color: #007bff; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">&larr; Back to Text Toolkit</a>
+    </div>
+    <div class="card">
+        <h1>WhatsApp Link & QR Generator</h1>
+        <p>Create direct chat links and downloadable QR codes for your business or profile.</p>
+
+        <form method="POST">
+            <label for="phone">Phone Number (with country code, e.g. 2348012345678):</label>
+            <input type="text" id="phone" name="phone" placeholder="e.g. 2348012345678" value="{{ phone }}" required>
+
+            <label for="message">Custom Welcome Message (Optional):</label>
+            <textarea id="message" name="message" rows="3" placeholder="Hello! I would like to make an inquiry.">{{ message }}</textarea>
+
+            <button type="submit">Generate Link & QR Code</button>
+        </form>
+
+        {% if wa_link %}
+        <div class="result">
+            <h3>Your WhatsApp Link:</h3>
+            <p><a href="{{ wa_link }}" target="_blank">{{ wa_link }}</a></p>
+            
+            {% if qr_code_url %}
+            <h4>Scannable QR Code:</h4>
+            <img class="qr-img" src="{{ qr_code_url }}" alt="WhatsApp QR Code"><br>
+            <a href="{{ qr_code_url }}" download="whatsapp_qr.png" style="display:inline-block; margin-top:10px; color:#075e54;">Download QR Code</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
