@@ -58,6 +58,9 @@ def whatsapp():
             qr_code_url = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode('ascii')
 
     return render_template('whatsapp.html', wa_link=wa_link, qr_code_url=qr_code_url, phone=phone, message=message)
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

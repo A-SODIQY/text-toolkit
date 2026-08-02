@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='og-image.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Text Toolkit</title>
@@ -38,11 +39,10 @@
 <body>
   <!-- Navigation Link to WhatsApp Tool -->
   <div style="margin-bottom: 20px;">
-    <a href="/whatsapp" style="color: #007bff; text-decoration: none; font-weight: bold;">
-  &rarr; Go to WhatsApp Link & QR Generator
-</a>
-
-  </div>
+  <a href="/whatsapp" style="color: #007bff; text-decoration: none; font-weight: bold;">
+    &rarr; Go to WhatsApp Link & QR Generator
+  </a>
+</div>
 
   <h1>Quick Text Toolkit</h1>
     <form method="POST">
@@ -66,5 +66,8 @@
         <p>{{ processed_text }}</p>
     </div>
     {% endif %}
+<footer style="margin-top: 40px; padding: 20px 0; border-top: 1px solid #eee; text-align: center; font-size: 0.9em; color: #666;">
+  <p>&copy; 2026 Quick Text Toolkit | <a href="/privacy" style="color: #007bff; text-decoration: none;">Privacy Policy</a></p>
+</footer>
 </body>
 </html>
