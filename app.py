@@ -45,7 +45,7 @@ def whatsapp():
         message = request.form.get('message', '').strip()
 
         if phone:
-            encoded_msg = urllib.parse.quote(message)
+            encoded_msg = urllib.parse.quote(message, safe='!')
             wa_link = f"https://wa.me/{phone}?text={encoded_msg}" if encoded_msg else f"https://wa.me/{phone}"
 
             qr = qrcode.QRCode(version=1, box_size=8, border=2)
