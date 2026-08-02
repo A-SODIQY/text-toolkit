@@ -1,4 +1,3 @@
-# trigger rebuild
 import io
 import base64
 import urllib.parse
@@ -12,11 +11,11 @@ def home():
     processed_text = ""
     word_count = 0
     char_count = 0
-    
+
     if request.method == 'POST':
         user_text = request.form.get('text', '')
         action = request.form.get('action')
-        
+
         if action == 'uppercase':
             processed_text = user_text.upper()
         elif action == 'lowercase':
@@ -25,10 +24,10 @@ def home():
             processed_text = user_text.title()
         elif action == 'remove_spaces':
             processed_text = " ".join(user_text.split())
-            
+
         word_count = len(processed_text.split()) if processed_text else 0
         char_count = len(processed_text)
-        
+
     return render_template('index.html', 
                            processed_text=processed_text, 
                            word_count=word_count, 
@@ -47,10 +46,7 @@ def whatsapp():
 
         if phone:
             encoded_msg = urllib.parse.quote(message)
-            if encoded_msg:
-                wa_link = f"https://wa.me/{phone}?text={encoded_msg}"
-            else:
-                wa_link = f"https://wa.me/{phone}"
+            wa_link = f"https://wa.me/{phone}?text={encoded_msg}" if encoded_msg else f"https://wa.me/{phone}"
 
             qr = qrcode.QRCode(version=1, box_size=8, border=2)
             qr.add_data(wa_link)
