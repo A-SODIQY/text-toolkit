@@ -67,3 +67,7 @@ def about():
 
 if __name__ == '__main__':
     app.run(debug=True)
+# Route for the Case Converter utility
+@app.route('/case-converter')
+def case_converter():
+    return render_template('converter.html')
