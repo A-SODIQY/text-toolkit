@@ -67,8 +67,21 @@
         {% if wa_link %}
         <div class="result">
             <h3>Your WhatsApp Link:</h3>
-            <p><a href="{{ wa_link }}" target="_blank">{{ wa_link }}</a></p>
-            
+            <div style="display: flex; gap: 8px; margin: 15px 0;">
+    <input type="text" value="{{ wa_link }}" id="waLink" readonly style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;">
+    <button type="button" onclick="copyLink()" style="background-color: #075e54; color: white; border: none; border-radius: 6px; padding: 0 16px; cursor: pointer; font-weight: bold;">Copy</button>
+</div>
+
+<script>
+function copyLink() {
+    var copyText = document.getElementById("waLink");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); /* For mobile devices */
+    navigator.clipboard.writeText(copyText.value);
+    alert("WhatsApp link copied!");
+}
+</script>
+
             {% if qr_code_url %}
             <h4>Scannable QR Code:</h4>
             <img class="qr-img" src="{{ qr_code_url }}" alt="WhatsApp QR Code"><br>
