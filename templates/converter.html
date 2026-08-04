@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Case Converter - TEXT TOOLKIT</title>
+    <title>Text Case Converter & Word Counter - TEXT TOOLKIT</title>
     <style>
         body { font-family: Arial, sans-serif; max-width: 800px; margin: 30px auto; padding: 0 20px; color: #333; background-color: #f9f9f9; }
         .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         h1 { color: #075e54; margin-bottom: 5px; }
-        textarea { width: 100%; height: 200px; padding: 12px; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit; font-size: 16px; resize: vertical; }
+        textarea { width: 100%; height: 180px; padding: 12px; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit; font-size: 16px; resize: vertical; }
+        .stats-bar { display: flex; justify-content: space-between; background: #e7fce8; padding: 10px 15px; border-radius: 5px; margin-top: 8px; font-weight: bold; color: #075e54; font-size: 14px; }
         .button-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 20px; }
         button { background-color: #075e54; color: white; border: none; padding: 12px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; }
         button:hover { background-color: #128c7e; }
@@ -22,11 +23,17 @@
     </div>
     
     <div class="card">
-        <h1>🔄 Case Converter</h1>
-        <p>Enter or paste your text below, then select the desired conversion.</p>
+        <h1>🔄 Case Converter & Counter</h1>
+        <p>Type or paste your text below to see live word counts and convert cases.</p>
         
-        <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+        <textarea id="inputText" placeholder="Paste your text here..." oninput="updateStats()"></textarea>
         
+        <!-- Live Stats Display Bar -->
+        <div class="stats-bar">
+            <span>Words: <span id="wordCount">0</span></span>
+            <span>Characters: <span id="charCount">0</span></span>
+        </div>
+
         <div class="button-group">
             <button onclick="convert('upper')">UPPERCASE</button>
             <button onclick="convert('lower')">lowercase</button>
@@ -37,28 +44,38 @@
     </div>
 
     <script>
+        function updateStats() {
+            let text = document.getElementById('inputText').value;
+            // Trim whitespace and split by spaces to count actual words
+            let words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            let chars = text.length;
+
+            document.getElementById('wordCount').innerText = words;
+            document.getElementById('charCount').innerText = chars;
+        }
+
         function convert(type) {
-            let input = document.getElementById('inputText').value;
-            let output = '';
+            let textarea = document.getElementById('inputText');
+            let input = textarea.value;
 
             switch(type) {
                 case 'upper':
-                    output = input.toUpperCase();
+                    textarea.value = input.toUpperCase();
                     break;
                 case 'lower':
-                    output = input.toLowerCase();
+                    textarea.value = input.toLowerCase();
                     break;
                 case 'capitalize':
-                    output = input.toLowerCase().split(' ').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
+                    textarea.value = input.toLowerCase().split(' ').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
                     break;
                 case 'sentence':
-                    output = input.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
+                    textarea.value = input.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
                     break;
                 case 'clear':
-                    document.getElementById('inputText').value = '';
-                    return;
+                    textarea.value = '';
+                    break;
             }
-            document.getElementById('inputText').value = output;
+            updateStats();
         }
     </script>
 </body>
