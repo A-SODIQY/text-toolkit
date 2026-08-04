@@ -66,19 +66,30 @@
 
         {% if wa_link %}
         <div class="result">
-            <h3>Your WhatsApp Link:</h3>
-            <div style="display: flex; gap: 8px; margin: 15px 0;">
-    <input type="text" value="{{ wa_link }}" id="waLink" readonly style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;">
-    <button type="button" onclick="copyLink()" style="background-color: #075e54; color: white; border: none; border-radius: 6px; padding: 0 16px; cursor: pointer; font-weight: bold;">Copy</button>
+            <h3 style="margin-top: 0; color: #1b5e20;">Your WhatsApp Link:</h3>
+
+<!-- Read-only link display input -->
+<div style="display: flex; gap: 8px; margin: 15px 0;">
+    <input type="text" id="waUrlInput" value="{{ whatsapp_url }}" readonly style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; background: #fff; margin-top: 0;">
+    <button type="button" onclick="copyLink()" id="copyBtn" style="width: auto; padding: 10px 16px; margin-top: 0; background: #128c7e; white-space: nowrap;">
+        📋 Copy
+    </button>
 </div>
+
+<!-- Direct Open / Test Link Button -->
+<a href="{{ whatsapp_url }}" target="_blank" style="display: inline-block; margin-bottom: 15px; color: #075e54; font-weight: bold; font-size: 14px; text-decoration: underline;">
+    👉 Test Link (Open in WhatsApp)
+</a>
 
 <script>
 function copyLink() {
-    var copyText = document.getElementById("waLink");
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); /* For mobile devices */
-    navigator.clipboard.writeText(copyText.value);
-    alert("WhatsApp link copied!");
+    const input = document.getElementById('waUrlInput');
+    input.select();
+    navigator.clipboard.writeText(input.value);
+    
+    const btn = document.getElementById('copyBtn');
+    btn.innerText = '✅ Copied!';
+    setTimeout(() => { btn.innerText = '📋 Copy'; }, 2000);
 }
 </script>
 
