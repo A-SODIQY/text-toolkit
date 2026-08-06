@@ -8,7 +8,7 @@ app = Flask(__name__)
 # TMDB API CONFIGURATION
 # ----------------------------------------------------
 # Replace the text inside quotes with your TMDB API key
-TMDB_API_KEY = 'YOUR_TMDB_API_KEY_HERE'
+TMDB_API_KEY = '72b1184f6368626d871c371e0571a430'
 
 # Genre and Drama categories linked to TMDB IDs
 GENRE_MAP = {
