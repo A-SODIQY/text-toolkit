@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What to Watch Tonight? - Movie & Show Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #121212; color: #ffffff; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h1 { color: #e50914; margin-bottom: 5px; }
+        p { color: #bbb; font-size: 14px; }
+        select, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 6px; font-size: 16px; border: none; }
+        select { background: #333; color: white; }
+        button { background: #e50914; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        button:hover { background: #b80710; }
+        .movie-card { margin-top: 25px; background: #2a2a2a; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #e50914; }
+        .movie-title { font-size: 22px; margin: 0 0 5px 0; color: #fff; }
+        .badge { background: #e50914; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .rating { color: #f39c12; font-weight: bold; }
+        .trailer-btn { display: inline-block; margin-top: 12px; background: #007bff; color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 What to Watch?</h1>
+        <p>Can't decide on a movie tonight? Select a genre or let us pick a random blockbuster for you!</p>
+
+        <form method="POST">
+            <select name="genre">
+                <option value="random">🎲 Surprise Me! (Any Genre)</option>
+                <option value="action" {% if selected_genre == 'action' %}selected{% endif %}>🔥 Action & Adventure</option>
+                <option value="comedy" {% if selected_genre == 'comedy' %}selected{% endif %}>😂 Comedy</option>
+                <option value="drama" {% if selected_genre == 'drama' %}selected{% endif %}>🎭 Drama</option>
+                <option value="horror" {% if selected_genre == 'horror' %}selected{% endif %}>🎃 Horror & Thriller</option>
+            </select>
+            <button type="submit">🍿 Pick A Movie</button>
+        </form>
+
+        {% if movie %}
+        <div class="movie-card">
+            <h2 class="movie-title">{{ movie.title }} <span class="badge">{{ movie.year }}</span></h2>
+            <p><strong>Rating:</strong> <span class="rating">⭐ {{ movie.rating }}</span></p>
+            <p>{{ movie.desc }}</p>
+            <a href="https://www.youtube.com/results?search_query={{ movie.title }}+{{ movie.year }}+trailer" target="_blank" class="trailer-btn">▶ Watch Trailer on YouTube</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
