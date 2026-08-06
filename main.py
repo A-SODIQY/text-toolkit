@@ -23,7 +23,6 @@ MOVIES_DB = {
         {"title": "The Conjuring", "year": "2013", "rating": "7.5/10", "desc": "Paranormal investigators work to help a family terrorized by a dark presence in their farmhouse."}
     ]
 }
-
 @app.route('/what-to-watch', methods=['GET', 'POST'])
 def what_to_watch():
     selected_genre = None
