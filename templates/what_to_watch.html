@@ -5,46 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>What to Watch Tonight? - Movie & Show Generator</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #121212; color: #ffffff; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        h1 { color: #e50914; margin-bottom: 5px; }
-        p { color: #bbb; font-size: 14px; }
-        select, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 6px; font-size: 16px; border: none; }
-        select { background: #333; color: white; }
-        button { background: #e50914; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; }
-        button:hover { background: #b80710; }
-        
-        /* Movie Card Layout */
-        .movie-card { margin-top: 25px; background: #2a2a2a; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #e50914; display: flex; flex-direction: column; gap: 15px; }
-        @media(min-width: 480px) {
-            .movie-card { flex-direction: row; }
+        * { box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #121212; 
+            color: #ffffff; 
+            margin: 0; 
+            padding: 0 0 70px 0; /* Padding at bottom so content isn't covered by bottom nav */
+            text-align: center; 
         }
+        
+        /* Top Navigation Bar */
+        .navbar { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 15px; 
+            background: #1a1a1a; 
+            padding: 12px 10px; 
+            border-bottom: 1px solid #333; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+        .navbar a { 
+            color: #cccccc; 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+        }
+        .navbar a:hover, .navbar a.active { color: #ffffff; }
+
+        /* Container */
+        .container { 
+            max-width: 600px; 
+            margin: 20px auto; 
+            background: #1e1e1e; 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+        }
+        h1 { color: #ffffff; margin-bottom: 5px; font-size: 22px; }
+        p { color: #bbb; font-size: 14px; line-height: 1.4; }
+        p a { color: #3182ce; text-decoration: none; }
+
+        /* Form Controls */
+        select, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 6px; font-size: 15px; border: 1px solid #333; }
+        select { background: #2a2a2a; color: white; cursor: pointer; }
+        button { background: #e50914; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; border: none; }
+        button:hover { background: #b80710; }
+
+        /* Movie Card */
+        .movie-card { margin-top: 25px; background: #2a2a2a; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #e50914; display: flex; flex-direction: column; gap: 15px; }
+        @media(min-width: 480px) { .movie-card { flex-direction: row; } }
         .poster { width: 100%; max-width: 180px; border-radius: 8px; object-fit: cover; align-self: center; }
         .movie-info { flex: 1; }
         .movie-title { font-size: 20px; margin: 0 0 5px 0; color: #fff; }
         .badge { background: #e50914; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
         .rating { color: #f39c12; font-weight: bold; }
         .trailer-btn { display: inline-block; margin-top: 12px; background: #ff0000; color: white; text-decoration: none; padding: 10px 15px; border-radius: 5px; font-weight: bold; font-size: 14px; }
+
+        /* Bottom Sticky Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+        }
+        .bottom-nav a {
+            color: #888888;
+            text-decoration: none;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+        .bottom-nav a.active, .bottom-nav a:hover {
+            color: #e50914;
+        }
+        .bottom-nav .icon {
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎬 What to Watch?</h1>
-        <p>Can't decide? Generate thousands of live movie recommendations with posters and trailers!</p>
 
-        <form method="POST">
-<select name="genre">
-    <option value="random">🎲 Surprise Me! (Movies, K-Drama & C-Drama)</option>
-    <option value="kdrama" {% if selected_genre == 'kdrama' %}selected{% endif %}>🇰🇷 K-Drama (Korean Drama)</option>
-    <option value="cdrama" {% if selected_genre == 'cdrama' %}selected{% endif %}>🇨🇳 C-Drama (Chinese Drama)</option>
-    <option value="action" {% if selected_genre == 'action' %}selected{% endif %}>🔥 Action & Adventure</option>
-    <option value="comedy" {% if selected_genre == 'comedy' %}selected{% endif %}>😂 Comedy</option>
-    <option value="drama" {% if selected_genre == 'drama' %}selected{% endif %}>🎭 Drama</option>
-    <option value="horror" {% if selected_genre == 'horror' %}selected{% endif %}>🎃 Horror & Thriller</option>
-    <option value="romance" {% if selected_genre == 'romance' %}selected{% endif %}>❤️ Romance</option>
-    <option value="sci-fi" {% if selected_genre == 'sci-fi' %}selected{% endif %}>🚀 Sci-Fi</option>
-</select>
-            <button type="submit">🍿 Pick A Movie</button>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <a href="/">🏠 Home</a>
+        <a href="/whatsapp">💬 WhatsApp Generator</a>
+        <a href="/what-to-watch" class="active">🎬 What to Watch</a>
+    </nav>
+
+    <div class="container">
+        <h1>What to Watch Tonight? - Movie & Show Generator</h1>
+        <p>Can't decide? Generate thousands of live movie & TV suggestions, trailers, and posters! Powered by <a href="https://www.themoviedb.org/" target="_blank">TMDB</a></p>
+
+        <form action="/what-to-watch" method="POST">
+            <select name="genre">
+                <option value="random">🎲 Surprise Me! (Movies, K-Drama & C-Drama)</option>
+                <option value="kdrama" {% if selected_genre == 'kdrama' %}selected{% endif %}>🇰🇷 K-Drama (Korean Drama)</option>
+                <option value="cdrama" {% if selected_genre == 'cdrama' %}selected{% endif %}>🇨🇳 C-Drama (Chinese Drama)</option>
+                <option value="action" {% if selected_genre == 'action' %}selected{% endif %}>🔥 Action & Adventure</option>
+                <option value="comedy" {% if selected_genre == 'comedy' %}selected{% endif %}>😂 Comedy</option>
+                <option value="drama" {% if selected_genre == 'drama' %}selected{% endif %}>🎭 Drama</option>
+                <option value="horror" {% if selected_genre == 'horror' %}selected{% endif %}>🎃 Horror & Thriller</option>
+                <option value="romance" {% if selected_genre == 'romance' %}selected{% endif %}>❤️ Romance</option>
+                <option value="sci-fi" {% if selected_genre == 'sci-fi' %}selected{% endif %}>🚀 Sci-Fi</option>
+            </select>
+            <button type="submit">🍿 Generate Movie Recommendation</button>
         </form>
 
         {% if movie %}
@@ -61,5 +140,26 @@
         </div>
         {% endif %}
     </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="/">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="/what-to-watch" class="active">
+            <span class="icon">🔍</span>
+            <span>Search</span>
+        </a>
+        <a href="/whatsapp">
+            <span class="icon">💬</span>
+            <span>WhatsApp</span>
+        </a>
+        <a href="/what-to-watch">
+            <span class="icon">🎬</span>
+            <span>Movies</span>
+        </a>
+    </nav>
+
 </body>
 </html>
