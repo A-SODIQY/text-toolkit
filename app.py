@@ -7,10 +7,8 @@ app = Flask(__name__)
 # ----------------------------------------------------
 # TMDB API CONFIGURATION
 # ----------------------------------------------------
-# Replace the text inside quotes with your TMDB API key
 TMDB_API_KEY = '72b1184f6368626d871c371e0571a430'
 
-# Genre and Drama categories linked to TMDB IDs
 GENRE_MAP = {
     'action': {'type': 'movie', 'params': '&with_genres=28'},
     'comedy': {'type': 'movie', 'params': '&with_genres=35'},
@@ -25,10 +23,50 @@ GENRE_MAP = {
 # ----------------------------------------------------
 # ROUTES
 # ----------------------------------------------------
+
+# 1. HOME ROUTE
 @app.route('/')
 def home():
     return render_template('index.html')
 
+# 2. WHATSAPP GENERATOR ROUTE
+@app.route('/whatsapp', methods=['GET', 'POST'])
+def whatsapp():
+    link = None
+    if request.method == 'POST':
+        phone = request.form.get('phone', '').strip()
+        message = request.form.get('message', '').strip()
+        if phone:
+            # Clean phone number formatting
+            clean_phone = ''.join(filter(str.isdigit, phone))
+            link = f"https://wa.me/{clean_phone}"
+            if message:
+                import urllib.parse
+                encoded_msg = urllib.parse.quote(message)
+                link += f"?text={encoded_msg}"
+    return render_template('whatsapp.html', link=link)
+
+# 3. CASE CONVERTER ROUTE
+@app.route('/case-converter', methods=['GET', 'POST'])
+def case_converter():
+    converted_text = None
+    original_text = ""
+    conversion_type = None
+
+    if request.method == 'POST':
+        original_text = request.form.get('text', '')
+        conversion_type = request.form.get('type')
+
+        if conversion_type == 'uppercase':
+            converted_text = original_text.upper()
+        elif conversion_type == 'lowercase':
+            converted_text = original_text.lower()
+        elif conversion_type == 'titlecase':
+            converted_text = original_text.title()
+
+    return render_template('case_converter.html', converted_text=converted_text, original_text=original_text)
+
+# 4. WHAT TO WATCH ROUTE
 @app.route('/what-to-watch', methods=['GET', 'POST'])
 def what_to_watch():
     selected_genre = None
@@ -36,9 +74,8 @@ def what_to_watch():
 
     if request.method == 'POST':
         selected_genre = request.form.get('genre')
-        page = random.randint(1, 5)  # Pick a random page to keep recommendations fresh
+        page = random.randint(1, 5)
         
-        # Surprise Me! selects randomly across all genres including K-Drama & C-Drama
         if selected_genre == 'random' or not selected_genre:
             chosen_key = random.choice(list(GENRE_MAP.keys()))
             config = GENRE_MAP[chosen_key]
