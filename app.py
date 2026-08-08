@@ -17,7 +17,9 @@ GENRE_MAP = {
     'romance': {'type': 'movie', 'params': '&with_genres=10749'},
     'sci-fi': {'type': 'movie', 'params': '&with_genres=878'},
     'kdrama': {'type': 'tv', 'params': '&with_original_language=ko&with_genres=18'},
-    'cdrama': {'type': 'tv', 'params': '&with_original_language=zh&with_genres=18'}
+    'cdrama': {'type': 'tv', 'params': '&with_original_language=zh&with_genres=18'},
+    'turkish': {'type': 'tv', 'params': '&with_original_language=tr'},  # Ertuğrul, Osman, Turkish Series
+    'arabic': {'type': 'movie', 'params': '&with_original_language=ar'} # Arabic Movies & Content
 }
 
 # ----------------------------------------------------
