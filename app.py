@@ -30,21 +30,33 @@ def home():
     return render_template('index.html')
 
 # 2. WHATSAPP GENERATOR ROUTE
+import urllib.parse
+
 @app.route('/whatsapp', methods=['GET', 'POST'])
 def whatsapp():
     link = None
+    qr_url = None
+    phone = ""
+    message = ""
+
     if request.method == 'POST':
         phone = request.form.get('phone', '').strip()
         message = request.form.get('message', '').strip()
-        if phone:
-            # Clean phone number formatting
-            clean_phone = ''.join(filter(str.isdigit, phone))
-            link = f"https://wa.me/{clean_phone}"
+        
+        # Clean phone number by removing +, spaces, and dashes
+        clean_phone = ''.join(filter(str.isdigit, phone))
+        
+        if clean_phone:
             if message:
-                import urllib.parse
                 encoded_msg = urllib.parse.quote(message)
-                link += f"?text={encoded_msg}"
-    return render_template('whatsapp.html', link=link)
+                link = f"https://wa.me/{clean_phone}?text={encoded_msg}"
+            else:
+                link = f"https://wa.me/{clean_phone}"
+            
+            # Generate QR Code via standard API
+            qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={urllib.parse.quote(link)}"
+
+    return render_template('whatsapp.html', link=link, qr_url=qr_url, phone=phone, message=message)
 
 # 3. CASE CONVERTER ROUTE
 @app.route('/case-converter', methods=['GET', 'POST'])
