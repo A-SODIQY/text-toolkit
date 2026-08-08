@@ -3,171 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Link & QR Code Generator</title>
+    <title>WhatsApp Link & QR Generator - Quick Text Toolkit</title>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         body { 
-            font-family: Arial, sans-serif; 
-            background: #121212; 
-            color: #ffffff; 
+            background-color: #f4f6f8; 
+            color: #2d3748; 
             margin: 0; 
-            padding: 0 0 70px 0; 
-            text-align: center; 
-        }
-        .navbar { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 15px; 
-            background: #1a1a1a; 
-            padding: 12px 10px; 
-            border-bottom: 1px solid #333; 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-        }
-        .navbar a { color: #cccccc; text-decoration: none; font-size: 14px; font-weight: bold; }
-        .navbar a:hover, .navbar a.active { color: #25d366; }
-
-        .container { 
-            max-width: 500px; 
-            margin: 20px auto; 
-            background: #1e1e1e; 
-            padding: 25px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
-        }
-        h1 { color: #25d366; margin-bottom: 5px; font-size: 22px; }
-        p { color: #bbb; font-size: 14px; }
-
-        input, textarea, button { 
-            width: 100%; 
-            padding: 12px; 
-            margin-top: 12px; 
-            border-radius: 6px; 
-            border: 1px solid #333; 
-            background: #2a2a2a; 
-            color: white; 
-            font-size: 15px; 
-        }
-        textarea { height: 90px; resize: vertical; }
-        button { background: #25d366; color: #000; font-weight: bold; cursor: pointer; border: none; }
-        button:hover { background: #1eb954; }
-
-        .result-card {
-            margin-top: 25px;
-            background: #2a2a2a;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            border-left: 5px solid #25d366;
-        }
-        .link-box {
-            word-break: break-all;
-            background: #1e1e1e;
-            padding: 10px;
-            border-radius: 6px;
-            margin: 10px 0;
-        }
-        .qr-code {
-            margin-top: 15px;
-            border-radius: 8px;
-            background: white;
-            padding: 10px;
-            width: 180px;
-            height: 180px;
-        }
-        .btn-action {
-            display: inline-block;
-            margin-top: 12px;
-            background: #25d366;
-            color: #000;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #1a1a1a;
-            border-top: 1px solid #333;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            z-index: 1000;
-        }
-        .bottom-nav a {
-            color: #888888;
-            text-decoration: none;
-            font-size: 11px;
+            padding: 20px 15px 60px 15px; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
         }
-        .bottom-nav a.active { color: #25d366; }
-        .bottom-nav .icon { font-size: 18px; }
+
+        .wrapper { width: 100%; max-width: 580px; }
+
+        /* Top Navigation Link */
+        .back-link { 
+            display: inline-block; 
+            color: #3182ce; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 15px; 
+            margin-bottom: 20px; 
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        /* Main Generator Card */
+        .card { 
+            background: #ffffff; 
+            border-radius: 16px; 
+            padding: 30px 25px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); 
+            border: 1px solid #e2e8f0;
+        }
+
+        .title { 
+            color: #075e54; 
+            font-size: 28px; 
+            font-weight: 800; 
+            margin: 0 0 10px 0; 
+            line-height: 1.2;
+        }
+
+        .subtitle { 
+            color: #4a5568; 
+            font-size: 15px; 
+            line-height: 1.5; 
+            margin-bottom: 25px; 
+        }
+
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { 
+            display: block; 
+            font-weight: 700; 
+            font-size: 14px; 
+            color: #1a202c; 
+            margin-bottom: 8px; 
+        }
+
+        input[type="tel"], textarea { 
+            width: 100%; 
+            padding: 12px 14px; 
+            border: 1px solid #cbd5e0; 
+            border-radius: 8px; 
+            font-size: 15px; 
+            color: #2d3748; 
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="tel"]:focus, textarea:focus { 
+            border-color: #25d366; 
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.15);
+        }
+
+        textarea { height: 90px; resize: vertical; }
+
+        /* Preset Message Tags */
+        .presets { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .preset-btn { 
+            background: #edf2f7; 
+            border: none; 
+            color: #4a5568; 
+            padding: 5px 10px; 
+            border-radius: 6px; 
+            font-size: 12px; 
+            font-weight: 600; 
+            cursor: pointer; 
+        }
+        .preset-btn:hover { background: #e2e8f0; color: #1a202c; }
+
+        /* Submit Button */
+        .btn-submit { 
+            width: 100%; 
+            background: #25d366; 
+            color: #ffffff; 
+            border: none; 
+            padding: 14px; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        .btn-submit:hover { background: #1eb954; }
+
+        /* Output Result Box */
+        .result-box { 
+            margin-top: 25px; 
+            background: #f0fdf4; 
+            border: 1px solid #bbf7d0; 
+            border-radius: 12px; 
+            padding: 20px; 
+            text-align: center;
+        }
+        .link-display { 
+            background: #ffffff; 
+            border: 1px solid #cbd5e0; 
+            padding: 10px; 
+            border-radius: 6px; 
+            word-break: break-all; 
+            font-size: 14px; 
+            color: #075e54; 
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .action-buttons { display: flex; gap: 10px; margin-top: 12px; }
+        .btn-action { 
+            flex: 1; 
+            padding: 10px; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            text-decoration: none; 
+            border: none; 
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .btn-open { background: #075e54; color: white; }
+        .btn-copy { background: #e2e8f0; color: #2d3748; }
+        .qr-img { width: 180px; height: 180px; margin-top: 15px; border-radius: 8px; border: 1px solid #cbd5e0; }
+
+        /* SEO & Info Sections */
+        .info-section { margin-top: 35px; text-align: left; }
+        .info-card { 
+            background: #ffffff; 
+            border-radius: 12px; 
+            padding: 20px 25px; 
+            margin-bottom: 20px; 
+            border: 1px solid #e2e8f0;
+        }
+        .info-card h2 { color: #075e54; font-size: 18px; margin-top: 0; margin-bottom: 10px; }
+        .info-card p, .info-card li { font-size: 14px; color: #4a5568; line-height: 1.6; }
+        .info-card ul { padding-left: 20px; margin-bottom: 0; }
+        .info-card li { margin-bottom: 8px; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="/">🏠 Home</a>
-        <a href="/whatsapp" class="active">💬 WhatsApp Generator</a>
-        <a href="/case-converter">🔤 Case Converter</a>
-        <a href="/what-to-watch">🎬 What to Watch</a>
-    </nav>
+    <div class="wrapper">
+        <a href="/" class="back-link">← Back to Text Toolkit</a>
 
-    <div class="container">
-        <h1>💬 WhatsApp Link & QR Generator</h1>
-        <p>Generate a direct WhatsApp chat link and downloadable QR code instantly.</p>
+        <!-- Main Form Card -->
+        <div class="card">
+            <h1 class="title">WhatsApp Link & QR Generator</h1>
+            <p class="subtitle">Create direct chat links and downloadable QR codes for your business or profile.</p>
 
-        <form action="/whatsapp" method="POST">
-            <input type="tel" name="phone" value="{{ phone or '' }}" placeholder="Phone number (e.g. 2348012345678)" required>
-            <textarea name="message" placeholder="Custom message (optional)...">{{ message or '' }}</textarea>
-            <button type="submit">⚡ Generate Link & QR Code</button>
-        </form>
+            <form action="/whatsapp" method="POST">
+                <div class="form-group">
+                    <label>Phone Number (with country code, e.g. 2348012345678):</label>
+                    <input type="tel" name="phone" value="{{ phone or '' }}" placeholder="e.g. 2348012345678" required>
+                </div>
 
-        {% if link %}
-        <div class="result-card">
-            <h3>🎉 Generated Successfully!</h3>
-            <p><strong>Direct Chat Link:</strong></p>
-            <div class="link-box">
-                <a href="{{ link }}" target="_blank" style="color: #25d366; font-weight: bold;">{{ link }}</a>
+                <div class="form-group">
+                    <label>Custom Welcome Message (Optional):</label>
+                    <textarea id="message-box" name="message" placeholder="Hello! I would like to make an inquiry.">{{ message or '' }}</textarea>
+                    
+                    <!-- Quick Presets -->
+                    <div class="presets">
+                        <span style="font-size: 12px; color: #718096; align-self: center;">Quick Fill:</span>
+                        <button type="button" class="preset-btn" onclick="setPreset('Hello! I would like to make an inquiry.')">Inquiry</button>
+                        <button type="button" class="preset-btn" onclick="setPreset('Hi, I want to place an order.')">Order</button>
+                        <button type="button" class="preset-btn" onclick="setPreset('Hello! I need customer support.')">Support</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Generate Link & QR Code</button>
+            </form>
+
+            <!-- Generated Output -->
+            {% if link %}
+            <div class="result-box">
+                <span style="color: #15803d; font-weight: bold; font-size: 14px;">🎉 Link Generated Successfully!</span>
+                <div class="link-display" id="wa-link">{{ link }}</div>
+                
+                <div class="action-buttons">
+                    <button class="btn-action btn-copy" onclick="copyLink()">📋 Copy Link</button>
+                    <a href="{{ link }}" target="_blank" class="btn-action btn-open">💬 Open Chat</a>
+                </div>
+
+                {% if qr_url %}
+                <div style="margin-top: 18px;">
+                    <span style="font-size: 13px; font-weight: bold; color: #4a5568;">Downloadable QR Code:</span><br>
+                    <img src="{{ qr_url }}" alt="WhatsApp QR Code" class="qr-img"><br>
+                    <a href="{{ qr_url }}" download="whatsapp_qr.png" target="_blank" class="btn-action btn-open" style="margin-top: 10px; display: inline-flex;">📥 Save QR Code Image</a>
+                </div>
+                {% endif %}
             </div>
-            
-            {% if qr_url %}
-            <p style="margin-top: 15px;"><strong>QR Code:</strong></p>
-            <img src="{{ qr_url }}" alt="WhatsApp QR Code" class="qr-code"><br>
-            <a href="{{ qr_url }}" target="_blank" download="whatsapp_qr.png" class="btn-action">📥 Open / Save QR Code</a>
             {% endif %}
         </div>
-        {% endif %}
+
+        <!-- SEO Content Sections -->
+        <div class="info-section">
+            <!-- Why Section -->
+            <div class="info-card">
+                <h2>Why Use a WhatsApp Link & QR Generator?</h2>
+                <p>Normally, starting a conversation on WhatsApp requires someone to manually save your phone number to their contacts first. This extra step causes friction and leads to lost customers. A direct WhatsApp link or QR code allows anyone to initiate a chat with a single tap or scan—no contact saving required.</p>
+            </div>
+
+            <!-- Benefits Section -->
+            <div class="info-card">
+                <h2>Key Benefits for Your Business</h2>
+                <ul>
+                    <li><strong>⚡ Zero Friction:</strong> Clients click or scan and start messaging instantly.</li>
+                    <li><strong>📱 Offline-to-Online Integration:</strong> Print your QR code on business cards, flyers, posters, and product packaging.</li>
+                    <li><strong>🎯 Pre-filled Customer Messages:</strong> Know exactly what the client wants before replying by setting custom default text.</li>
+                    <li><strong>📈 Boost Social Media Sales:</strong> Add your direct link to your Instagram, TikTok, or Facebook bio.</li>
+                </ul>
+            </div>
+
+            <!-- Things to Add / Pro Tips -->
+            <div class="info-card">
+                <h2>Pro Tips & Best Practices</h2>
+                <ul>
+                    <li><strong>Always include your country code:</strong> Enter `234` for Nigeria, `1` for the US/Canada, or `44` for the UK without leading zeroes or `+` signs.</li>
+                    <li><strong>Keep default messages friendly:</strong> Give buyers a simple sentence to start the conversation so they don't have to think about what to type.</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <nav class="bottom-nav">
-        <a href="/">
-            <span class="icon">🏠</span>
-            <span>Home</span>
-        </a>
-        <a href="/whatsapp" class="active">
-            <span class="icon">💬</span>
-            <span>WhatsApp</span>
-        </a>
-        <a href="/case-converter">
-            <span class="icon">🔤</span>
-            <span>Converter</span>
-        </a>
-        <a href="/what-to-watch">
-            <span class="icon">🎬</span>
-            <span>Movies</span>
-        </a>
-    </nav>
+    <script>
+        function setPreset(text) {
+            document.getElementById('message-box').value = text;
+        }
 
+        function copyLink() {
+            var linkText = document.getElementById('wa-link').innerText;
+            navigator.clipboard.writeText(linkText).then(function() {
+                alert('WhatsApp Link copied to clipboard!');
+            });
+        }
+    </script>
 </body>
 </html>
