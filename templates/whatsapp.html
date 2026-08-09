@@ -77,21 +77,26 @@
 
             <button onclick="generateLink()" class="btn-generate">Generate Link & QR Code</button>
 
-            <div id="output" style="margin-top: 20px; display: none;">
-                <p><strong>Your Direct WhatsApp Link:</strong></p>
-                <input type="text" id="wa-link" readonly style="margin-bottom: 10px;">
-                <button onclick="copyLink()" style="background: #3182ce; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold;">Copy Link</button>
+            <div id="output" style="margin-top: 25px; display: none; flex-direction: column; align-items: center; gap: 12px;">
+                <p style="font-size: 14px; font-weight: 700; color: #2d3748; margin: 0;">Your Direct WhatsApp Link:</p>
                 
-                <div style="margin-top: 20px;">
-                    <img id="qr-img" src="" alt="WhatsApp QR Code" style="max-width: 200px;">
+                <input type="text" id="wa-link" readonly style="width: 100%; text-align: center; background: #f7fafc; font-weight: 600; color: #2b6cb0; border: 1px dashed #cbd5e0;">
+                
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <button onclick="copyLink()" style="flex: 1; background: #3182ce; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">📋 Copy Link</button>
+                    <a id="download-btn" href="" download="whatsapp-qr.png" style="flex: 1; background: #2d3748; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; text-decoration: none; text-align: center;">📥 Download QR</a>
+                </div>
+                
+                <div style="margin-top: 15px; padding: 12px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                    <img id="qr-img" src="" alt="WhatsApp QR Code" style="width: 180px; height: 180px; display: block;">
                 </div>
 
-                <!-- Paystack Link -->
-                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                <!-- Paystack Support Button -->
+                <div style="margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid #e2e8f0; text-align: center;">
                     <p style="font-size: 14px; color: #4a5568; font-weight: 600; margin-bottom: 10px;">
                         ☕ Found this generator helpful?
                     </p>
-                    <a href="https://paystack.com/pay/https://paystack.shop/pay/support-toolki" target="_blank" style="background: #ffdd00; color: #000000; padding: 10px 20px; border-radius: 20px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 14px;">
+                    <a href="https://paystack.com/pay/https://paystack.shop/pay/support-toolki" target="_blank" style="background: #ffdd00; color: #000000; padding: 10px 22px; border-radius: 20px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                         💛 Support via Paystack
                     </a>
                 </div>
