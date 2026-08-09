@@ -83,50 +83,66 @@ def case_converter():
 # 4. WHAT TO WATCH ROUTE
 @app.route('/what-to-watch', methods=['GET', 'POST'])
 def what_to_watch():
-    selected_genre = None
-    movie = None
+    selected_genre = 'random'
+    media = None
 
     if request.method == 'POST':
-        selected_genre = request.form.get('genre')
-        page = random.randint(1, 5)
-        
-        if selected_genre == 'random' or not selected_genre:
-            chosen_key = random.choice(list(GENRE_MAP.keys()))
-            config = GENRE_MAP[chosen_key]
-        elif selected_genre in GENRE_MAP:
-            config = GENRE_MAP[selected_genre]
-        else:
-            config = {'type': 'movie', 'params': ''}
+        selected_genre = request.form.get('genre', 'random')
 
-        media_type = config['type']
-        extra_params = config['params']
-        url = f"https://api.themoviedb.org/3/discover/{media_type}?api_key={TMDB_API_KEY}&page={page}&sort_by=popularity.desc{extra_params}"
-            
-        try:
-            response = requests.get(url, timeout=5)
-            if response.status_code == 200:
-                results = response.json().get('results', [])
-                if results:
-                    selected_item = random.choice(results)
-                    
-                    poster_path = selected_item.get('poster_path')
-                    poster_url = f"https://image.tmdb.org/t/p/w500{poster_path}" if poster_path else None
-                    
-                    title = selected_item.get('title') or selected_item.get('name')
-                    release_date = selected_item.get('release_date') or selected_item.get('first_air_date', '')
-                    year = release_date.split('-')[0] if release_date else 'N/A'
-                    
-                    movie = {
-                        'title': title,
-                        'year': year,
-                        'rating': f"{selected_item.get('vote_average', 0):.1f}/10",
-                        'desc': selected_item.get('overview', 'No summary available.'),
-                        'poster': poster_url
-                    }
-        except Exception as e:
-            print("API Error:", e)
+    # Handle genre selection
+    if selected_genre == 'random' or selected_genre not in GENRE_MAP:
+        chosen_key = random.choice(list(GENRE_MAP.keys()))
+        config = GENRE_MAP[chosen_key]
+    else:
+        config = GENRE_MAP[selected_genre]
 
-    return render_template('what_to_watch.html', movie=movie, selected_genre=selected_genre)
+    media_type = config['type']
+    extra_params = config['params']
+    random_page = random.randint(1, 5)
+
+    url = f"https://api.themoviedb.org/3/discover/{media_type}?api_key={TMDB_API_KEY}&sort_by=popularity.desc&page={random_page}{extra_params}"
+
+    try:
+        response = requests.get(url, timeout=5)
+        if response.status_code == 200:
+            results = response.json().get('results', [])
+            if results:
+                item = random.choice(results)
+                
+                title = item.get('title') or item.get('name') or "Unknown Title"
+                overview = item.get('overview', 'No overview available.')
+                poster_path = item.get('poster_path')
+                poster_url = f"https://image.tmdb.org/t/p/w500{poster_path}" if poster_path else None
+                vote_average = round(item.get('vote_average', 0), 1)
+                release_date = item.get('release_date') or item.get('first_air_date') or 'N/A'
+                
+                # Fetch Trailer Video Key
+                item_id = item.get('id')
+                trailer_url = None
+                try:
+                    video_res = requests.get(f"https://api.themoviedb.org/3/{media_type}/{item_id}/videos?api_key={TMDB_API_KEY}", timeout=5)
+                    if video_res.status_code == 200:
+                        videos = video_res.json().get('results', [])
+                        for vid in videos:
+                            if vid.get('type') == 'Trailer' and vid.get('site') == 'YouTube':
+                                trailer_url = f"https://www.youtube.com/watch?v={vid.get('key')}"
+                                break
+                except Exception:
+                    pass
+
+                media = {
+                    'title': title,
+                    'overview': overview,
+                    'poster_url': poster_url,
+                    'rating': vote_average,
+                    'release_date': release_date,
+                    'trailer_url': trailer_url,
+                    'media_type': 'TV Series' if media_type == 'tv' else 'Movie'
+                }
+    except Exception as e:
+        print(f"TMDB Fetch Error: {e}")
+
+    return render_template('what_to_watch.html', media=media, selected_genre=selected_genre)
 
 if __name__ == '__main__':
     app.run(debug=True)
