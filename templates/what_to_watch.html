@@ -163,12 +163,9 @@
             {% if media.trailer_url %}
             <a href="{{ media.trailer_url }}" target="_blank" style="background: #ff0000; color: #ffffff; padding: 10px 16px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 14px; display: inline-block;">
                 ▶️ Watch Trailer
-            </a>
-            {% endif %}
-
-        <a href="https://www.amazon.com/gp/video/storefront?tag=whattowatch0d-20" target="_blank" class="btn-affiliate" style="background: #00a8e1; color: white; padding: 10px 15px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">
-            📺 Watch on Prime Video
-             </a>
+<a href="https://www.amazon.com/s?k={{ media.title|urlencode }}&tag=whattowatch0d-20" target="_blank" style="background: #00a8e1; color: #ffffff; padding: 10px 16px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 14px; display: inline-block;">
+    📺 Watch on Prime Video
+</a>
         </div>
     </div>
 </div>
