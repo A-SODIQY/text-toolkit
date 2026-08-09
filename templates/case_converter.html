@@ -3,159 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Converter - Quick Text Toolkit</title>
+    <title>Case Converter & Text Cleaner</title>
     <style>
-        * { box-sizing: border-box; }
-        body { 
-            font-family: Arial, sans-serif; 
-            background: #121212; 
-            color: #ffffff; 
-            margin: 0; 
-            padding: 0 0 70px 0; 
-            text-align: center; 
-        }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f4f6f8; color: #2d3748; margin: 0; padding: 20px 15px 80px 15px; display: flex; flex-direction: column; align-items: center; }
+        .wrapper { width: 100%; max-width: 580px; display: flex; flex-direction: column; gap: 20px; }
+        .card { background: #ffffff; border-radius: 16px; padding: 25px 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; text-align: center; }
         
-        .navbar { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 15px; 
-            background: #1a1a1a; 
-            padding: 12px 10px; 
-            border-bottom: 1px solid #333; 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-        }
-        .navbar a { color: #cccccc; text-decoration: none; font-size: 14px; font-weight: bold; }
-        .navbar a:hover, .navbar a.active { color: #ffffff; }
+        textarea { width: 100%; height: 160px; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 15px; margin-bottom: 15px; resize: vertical; }
+        
+        .btn-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 15px; }
+        .btn { background: #3182ce; color: white; border: none; padding: 10px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; }
+        .btn-clear { background: #e53e3e; }
+        
+        .stats-box { font-size: 14px; color: #4a5568; font-weight: 600; margin-top: 10px; }
 
-        .container { 
-            max-width: 600px; 
-            margin: 20px auto; 
-            background: #1e1e1e; 
-            padding: 25px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
-        }
-        h1 { color: #ffffff; margin-bottom: 5px; font-size: 22px; }
-        p { color: #bbb; font-size: 14px; }
-
-        textarea {
-            width: 100%;
-            height: 120px;
-            background: #2a2a2a;
-            color: #ffffff;
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 10px;
-            font-size: 15px;
-            margin-top: 10px;
-            resize: vertical;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        button { 
-            flex: 1;
-            padding: 12px; 
-            border-radius: 6px; 
-            font-size: 14px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            border: none; 
-            background: #3182ce; 
-            color: white; 
-        }
-        button:hover { background: #2b6cb0; }
-
-        .result-box {
-            margin-top: 20px;
-            background: #2a2a2a;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: left;
-            border-left: 5px solid #3182ce;
-        }
-
+        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: #1a1a1a;
-            border-top: 1px solid #333;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-around;
             padding: 8px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
             z-index: 1000;
         }
         .bottom-nav a {
-            color: #888888;
-            text-decoration: none;
-            font-size: 11px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
+            text-decoration: none;
+            color: #718096;
+            font-size: 12px;
+            font-weight: 600;
         }
-        .bottom-nav a.active { color: #3182ce; }
-        .bottom-nav .icon { font-size: 18px; }
+        .bottom-nav a.active {
+            color: #3182ce;
+        }
+        .bottom-nav .icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="/">🏠 Home</a>
-        <a href="/case-converter" class="active">🔤 Case Converter</a>
-        <a href="/whatsapp">💬 WhatsApp Generator</a>
-        <a href="/what-to-watch">🎬 What to Watch</a>
-    </nav>
+    <div class="wrapper">
+        <div class="card">
+            <h2>🔤 Case Converter & Text Cleaner</h2>
+            <p style="font-size: 14px; color: #718096; margin-bottom: 15px;">Convert text to UPPERCASE, lowercase, Title Case, or clean extra spaces instantly.</p>
 
-    <div class="container">
-        <h1>🔤 Text Case Converter</h1>
-        <p>Easily transform your text into UPPERCASE, lowercase, or Title Case.</p>
+            <textarea id="text-input" placeholder="Type or paste your text here..." oninput="updateStats()"></textarea>
 
-        <form method="POST" action="/case-converter">
-            <textarea name="text" placeholder="Type or paste your text here..." required>{{ original_text or '' }}</textarea>
-            
             <div class="btn-group">
-                <button type="submit" name="type" value="uppercase">UPPERCASE</button>
-                <button type="submit" name="type" value="lowercase">lowercase</button>
-                <button type="submit" name="type" value="titlecase">Title Case</button>
-            </div>
-        </form>
+                <button onclick="toUpper()" class="btn">UPPERCASE</button>
+                <button onclick="toLower()" class="btn">lowercase</button>
+                <button onclick="toTitle()" class="btn">Title Case</button>
 
-        {% if converted_text %}
-        <div class="result-box">
-            <strong>Converted Result:</strong>
-            <p style="margin-top: 8px; font-size: 16px; color: #fff;">{{ converted_text }}</p>
+                <button onclick="toSentence()" class="btn">Sentence case</button>
+                <button onclick="cleanSpaces()" class="btn" style="background: #2b6cb0;">Clean Spaces</button>
+                <button onclick="copyText()" class="btn" style="background: #38a169;">Copy Text</button>
+                <button onclick="clearText()" class="btn btn-clear">Clear</button>
+            </div>
+
+            <div class="stats-box">
+                Words: <span id="word-count">0</span> | Characters: <span id="char-count">0</span>
+            </div>
         </div>
-        {% endif %}
     </div>
 
+    <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
         <a href="/">
             <span class="icon">🏠</span>
             <span>Home</span>
         </a>
+        <a href="/whatsapp">
+            <span class="icon">📲</span>
+            <span>WhatsApp</span>
+        </a>
         <a href="/case-converter" class="active">
             <span class="icon">🔤</span>
             <span>Converter</span>
         </a>
-        <a href="/whatsapp">
-            <span class="icon">💬</span>
-            <span>WhatsApp</span>
-        </a>
         <a href="/what-to-watch">
             <span class="icon">🎬</span>
-            <span>Movies</span>
+            <span>Watch</span>
         </a>
     </nav>
 
+    <script>
+        const textarea = document.getElementById('text-input');
+
+        function updateStats() {
+            let val = textarea.value;
+            document.getElementById('char-count').innerText = val.length;
+            let words = val.trim().split(/\s+/).filter(w => w.length > 0);
+            document.getElementById('word-count').innerText = words.length;
+        }
+
+        function toUpper() { textarea.value = textarea.value.toUpperCase(); updateStats(); }
+        function toLower() { textarea.value = textarea.value.toLowerCase(); updateStats(); }
+        
+        function toTitle() {
+            textarea.value = textarea.value.toLowerCase().replace(/(?:^|\s)\w/g, function(match) {
+                return match.toUpperCase();
+            });
+            updateStats();
+        }
+
+        function toSentence() {
+            textarea.value = textarea.value.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, function(c) {
+                return c.toUpperCase();
+            });
+            updateStats();
+        }
+
+        function cleanSpaces() {
+            textarea.value = textarea.value.replace(/\s+/g, ' ').trim();
+            updateStats();
+        }
+
+        function copyText() {
+            textarea.select();
+            document.execCommand('copy');
+            alert('Text copied to clipboard!');
+        }
+
+        function clearText() {
+            textarea.value = '';
+            updateStats();
+        }
+    </script>
 </body>
 </html>

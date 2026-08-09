@@ -35,6 +35,10 @@ def index():
 def whatsapp():
     return render_template('whatsapp.html')
 
+@app.route('/case-converter')
+def case_converter():
+    return render_template('case_converter.html')
+
 @app.route('/what-to-watch', methods=['GET', 'POST'])
 def what_to_watch():
     selected_genre = 'random'
@@ -43,7 +47,6 @@ def what_to_watch():
     if request.method == 'POST':
         selected_genre = request.form.get('genre', 'random')
 
-    # Surprise Me / Random Genre Handling
     if selected_genre == 'random' or selected_genre not in GENRE_MAP:
         chosen_key = random.choice(list(GENRE_MAP.keys()))
         config = GENRE_MAP[chosen_key]
@@ -70,7 +73,6 @@ def what_to_watch():
                 vote_average = round(item.get('vote_average', 0), 1)
                 release_date = item.get('release_date') or item.get('first_air_date') or 'N/A'
                 
-                # Fetch Trailer URL
                 item_id = item.get('id')
                 trailer_url = None
                 try:
