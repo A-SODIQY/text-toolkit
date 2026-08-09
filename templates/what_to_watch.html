@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Title & Description -->
+    <title>What to Watch Tonight? - Free Movie & TV Show Generator</title>
+    <meta name="description" content="Can't decide what to watch? Generate instant movie recommendations, TV shows, K-Dramas, Turkish series, and Arabic movies with trailers and ratings!">
+    <meta name="keywords" content="what to watch, movie generator, tv show recommendations, kdrama picker, turkish series, arabic movies">
+    
+    <!-- Open Graph / Social Media Sharing -->
+    <meta property="og:title" content="What to Watch Tonight? - Instant Movie Recommendation Tool">
+    <meta property="og:description" content="Discover top-rated movies, trailers, and TV series across all genres including K-Drama, Turkish series, and Arabic releases.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://text_toolkit.soodiqy.onrender.com/what-to-watch">
+</head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>What to Watch Tonight? - Movie & Show Generator</title>
@@ -128,19 +143,17 @@
             <button type="submit">🍿 Generate Movie Recommendation</button>
         </form>
 
-        {% if movie %}
-        <div class="movie-card">
-            {% if movie.poster %}
-            <img src="{{ movie.poster }}" alt="{{ movie.title }} Poster" class="poster">
-            {% endif %}
-            <div class="movie-info">
-                <h2 class="movie-title">{{ movie.title }} <span class="badge">{{ movie.year }}</span></h2>
-                <p><strong>Rating:</strong> <span class="rating">⭐ {{ movie.rating }}</span></p>
-                <p>{{ movie.desc }}</p>
-                <a href="https://www.youtube.com/results?search_query={{ movie.title }}+{{ movie.year }}+trailer" target="_blank" class="trailer-btn">▶ Watch Trailer</a>
-            </div>
-        </div>
-        {% endif %}
+{% if movie %}
+<div class="movie-card">
+    <h2>{{ movie.title }}</h2>
+    <p>{{ movie.overview }}</p>
+    
+    <div class="affiliate-links" style="margin-top: 15px;">
+        <a href="https://www.amazon.com/gp/video/storefront?tag=whattowatch0d-20" target="_blank" class="btn-affiliate" style="background: #00a8e1; color: white; padding: 10px 15px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">
+            📺 Watch on Prime Video
+        </a>
+</div>
+{% endif %}
     </div>
 
     <!-- Bottom Navigation Bar -->
