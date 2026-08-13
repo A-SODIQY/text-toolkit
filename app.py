@@ -33,7 +33,7 @@ def index():
 
 @app.route('/robots.txt')
 def robots():
-    return Response("User-agent: *\nAllow: /", mimetype="text/plain")
+    return app.send_static_file('robots.txt')
 
 @app.route('/whatsapp')
 def whatsapp():
