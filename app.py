@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 import random
 import requests
 import urllib.parse
@@ -33,7 +33,7 @@ def index():
 
 @app.route('/robots.txt')
 def robots():
-    return "User-agent: *\nAllow: /", 200, {'Content-Type': 'text/plain'}
+    return Response("User-agent: *\nAllow: /", mimetype="text/plain")
 
 @app.route('/whatsapp')
 def whatsapp():
