@@ -20,6 +20,9 @@ GENRE_MAP = {
     'romance': {'type': 'movie', 'params': '&with_genres=10749'},
     'sci-fi': {'type': 'movie', 'params': '&with_genres=878'}
 }
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static', 'favicon.png', mimetype='image/png')
 
 @app.template_filter('urlencode')
 def urlencode_filter(s):
